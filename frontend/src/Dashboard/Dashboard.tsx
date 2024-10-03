@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Card, Table, Tag, List, Typography } from 'antd';
 import { AllUsers, Recommendation } from '../types';
+import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'; // Import social media icons
 import './Dashboard.scss';
 
 const { Title, Text } = Typography;
@@ -20,7 +21,6 @@ const Dashboard: React.FC<DashboardProps> = ({
     console.log('usersWithRecommendations:', usersWithRecommendations);
   }, [usersWithRecommendations]);
 
-  // Define professional and social categories
   const professionalInterests = [
     'technology',
     'finance',
@@ -29,6 +29,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     'coding',
     'engineering',
   ];
+
   const socialFunInterests = [
     'yoga',
     'hiking',
@@ -39,14 +40,40 @@ const Dashboard: React.FC<DashboardProps> = ({
     'running',
   ];
 
-  // Function to determine the interest category
   const getInterestColor = (interest: string) => {
     if (professionalInterests.includes(interest.toLowerCase())) {
-      return 'magenta'; // Professional
+      return 'magenta';
     } else if (socialFunInterests.includes(interest.toLowerCase())) {
-      return 'green'; // Social/Fun
+      return 'green';
     }
-    return 'blue'; // Default color
+    return 'blue';
+  };
+
+  const renderSocialMediaIcons = (record: AllUsers) => {
+    return (
+      <div style={{ display: 'flex', gap: '10px' }}>
+        {record.facebook && (
+          <a href={record.facebook} target="_blank" rel="noopener noreferrer">
+            <FaFacebook size={20} color="#3b5998" />
+          </a>
+        )}
+        {record.instagram && (
+          <a href={record.instagram} target="_blank" rel="noopener noreferrer">
+            <FaInstagram size={20} color="#E1306C" />
+          </a>
+        )}
+        {record.linkedin && (
+          <a href={record.linkedin} target="_blank" rel="noopener noreferrer">
+            <FaLinkedin size={20} color="#0e76a8" />
+          </a>
+        )}
+        {record.github && (
+          <a href={record.github} target="_blank" rel="noopener noreferrer">
+            <FaGithub size={20} color="#333" />
+          </a>
+        )}
+      </div>
+    );
   };
 
   const columns = [
@@ -54,14 +81,14 @@ const Dashboard: React.FC<DashboardProps> = ({
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      width: '15%',
+      width: '10%',
       render: (name: string) => <Text strong>{name}</Text>,
     },
     {
       title: 'Age',
       dataIndex: 'age',
       key: 'age',
-      width: '10%',
+      width: '7%',
       render: (age: number) => <Text>{age} years</Text>,
     },
     {
@@ -72,10 +99,19 @@ const Dashboard: React.FC<DashboardProps> = ({
       render: (location: string) => <Tag color="purple">{location}</Tag>,
     },
     {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+      width: '12%',
+      render: (description: string) => (
+        <Text>{description || 'No description'}</Text>
+      ),
+    },
+    {
       title: 'Interests',
       dataIndex: 'interests',
       key: 'interests',
-      width: '25%',
+      width: '20%',
       render: (interests: string[]) => (
         <>
           {interests?.map((interest) => (
@@ -85,6 +121,13 @@ const Dashboard: React.FC<DashboardProps> = ({
           )) || 'No interests'}
         </>
       ),
+    },
+    {
+      title: 'Social Media',
+      dataIndex: '',
+      key: 'social_media',
+      render: (record: AllUsers) => renderSocialMediaIcons(record),
+      width: '10%',
     },
     {
       title: 'Recommendations',
@@ -97,6 +140,22 @@ const Dashboard: React.FC<DashboardProps> = ({
           renderItem={(item) => (
             <List.Item>
               <Text strong>{item.title}</Text>: {item.description}
+            </List.Item>
+          )}
+        />
+      ),
+    },
+    {
+      title: 'Follows',
+      dataIndex: 'follows',
+      key: 'follows',
+      render: (follows: string[]) => (
+        <List
+          size="small"
+          dataSource={follows || []}
+          renderItem={(followedUser) => (
+            <List.Item>
+              <Text>{followedUser}</Text>
             </List.Item>
           )}
         />

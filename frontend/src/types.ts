@@ -26,4 +26,8 @@ export interface AllUsers {
   location: string;
   interests: string[];
   recommendations: Recommendation[];
+  facebook?: string;
+  instagram?: string;
+  linkedin?: string;
+  github?: string;
 }

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 
 class RecommendationBase(BaseModel):
@@ -16,13 +16,6 @@ class Recommendation(RecommendationBase):
         from_attributes = True
 
 
-class UserBase(BaseModel):
-    name: str
-    age: int
-    location: str
-    interests: List[str]
-
-
 class UserWithRecommendations(BaseModel):
     id: int
     name: str
@@ -30,6 +23,12 @@ class UserWithRecommendations(BaseModel):
     location: str
     interests: List[str]
     recommendations: List[Recommendation]
+    facebook: Optional[str] = None
+    instagram: Optional[str] = None
+    linkedin: Optional[str] = None
+    github: Optional[str] = None
+    description: Optional[str] = None
+    follows: Optional[List[str]] = []
 
     class Config:
         from_attributes = True

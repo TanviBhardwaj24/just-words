@@ -7,7 +7,6 @@ import UserDetails from './UserDetails/UserDetails';
 import './App.css';
 
 const { Header, Content } = Layout;
-const { Title } = Typography;
 
 const App: React.FC = () => {
   const [usersWithRecommendations, setUsersWithRecommendations] = useState<

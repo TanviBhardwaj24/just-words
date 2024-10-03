@@ -1,5 +1,6 @@
 import logging
 from fastapi import APIRouter, Depends, HTTPException
+from app.models import UserModel, FollowModel, RecommendationModel
 from sqlalchemy.orm import Session
 from app import crud, schemas, database
 from app.services import llm_service
@@ -14,6 +15,31 @@ logger = logging.getLogger(__name__)
 @router.get("/all-users", response_model=List[schemas.UserWithRecommendations])
 def get_all_users(db: Session = Depends(database.get_db)):
     users = crud.get_all_users(db)
+
+    for user in users:
+        # Populate the user's recommendations
+        user_recommendations = (
+            db.query(RecommendationModel)
+            .filter(RecommendationModel.user_id == user.id)
+            .all()
+        )
+
+        # Populate the users they are following
+        followed_users = (
+            db.query(UserModel)
+            .join(FollowModel, FollowModel.to_user_id == UserModel.id)
+            .filter(FollowModel.from_user_id == user.id)
+            .all()
+        )
+
+        # Set follows to an empty list if there are no followed users
+        user.follows = (
+            [followed_user.name for followed_user in followed_users]
+            if followed_users
+            else []
+        )
+        user.recommendations = user_recommendations
+
     return users
 
 

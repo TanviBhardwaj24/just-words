@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import users
 from app.database import Base, engine
 
-# Create the database tables
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
