@@ -26,6 +26,7 @@ except ValueError as e:
 
 def generate_email_content(
     user: schemas.UserWithRecommendations,
+    email_type: str,
 ) -> schemas.EmailContent:
     if client is None:
         raise RuntimeError(
@@ -33,27 +34,56 @@ def generate_email_content(
         )
 
     try:
-        prompt = f"""
-        Generate a personalized email for a user with the following details:
-        Name: {user.name}
-        Age: {user.age}
-        Location: {user.location}
-        Interests: {', '.join(user.interests)}
+        if email_type == "winback":
+            prompt = f"""
+            Generate a personalized winback email for a user with the following details:
+            Name: {user.name}
+            Age: {user.age}
+            Location: {user.location}
+            Interests: {', '.join(user.interests)}
 
-        Recommendations:
-        {' '.join([f"- {rec.title}: {rec.description}" for rec in user.recommendations])}
+            Recommendations:
+            {' '.join([f"- {rec.title}: {rec.description}" for rec in user.recommendations])}
 
-        The email should:
-        1. Be friendly and personalized
-        2. Mention the user's interests
-        3. Highlight the recommendations
-        4. Encourage the user to explore the platform further
+            The email should:
+            1. Offer a 50% discount on a paid event for professionals.
+            2. Encourage the user to return and participate in the events.
+            3. Mention the event's location, date, and any available discounts.
+            4. Format the email in a friendly tone.
+            """
+        elif email_type == "weekly-digest":
+            prompt = f"""
+            Generate a weekly digest email for a user with the following details:
+            Name: {user.name}
+            Age: {user.age}
+            Location: {user.location}
+            Interests: {', '.join(user.interests)}
 
-        Format the response as:
-        Subject: [Generated Subject]
+            Recommendations:
+            {' '.join([f"- {rec.title}: {rec.description}" for rec in user.recommendations])}
 
-        [Generated Email Body]
-        """
+            The email should:
+            1. Score the user based on their interests and recommendations.
+            2. Provide a personalized overview of events and activities.
+            3. Encourage further engagement.
+            """
+        else:
+            prompt = f"""
+            Generate a personalized thank-you email for signing up
+            on the platform for a user with the following details:
+            Name: {user.name}
+            Age: {user.age}
+            Location: {user.location}
+            Interests: {', '.join(user.interests)}
+
+            Recommendations:
+            {' '.join([f"- {rec.title}: {rec.description}" for rec in user.recommendations])}
+
+            The email should:
+            1. Welcome the user to the platform.
+            2. Highlight the events and activities recommended for the user.
+            3. Encourage the user to explore more.
+            """
 
         response = client.completions.create(
             model="gpt-3.5-turbo-instruct",

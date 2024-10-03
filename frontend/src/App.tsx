@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Layout, Typography, message } from 'antd';
-import { UserWithRecommendations } from './types';
+import { AllUsers } from './types';
 import Dashboard from './Dashboard/Dashboard';
 import UserDetails from './UserDetails/UserDetails';
+import './App.css';
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const App: React.FC = () => {
   const [usersWithRecommendations, setUsersWithRecommendations] = useState<
-    UserWithRecommendations[]
+    AllUsers[]
   >([]);
+
   const [loading, setLoading] = useState(false);
-  const [selectedUser, setSelectedUser] =
-    useState<UserWithRecommendations | null>(null);
+  const [selectedUser, setSelectedUser] = useState<AllUsers | null>(null);
 
   useEffect(() => {
     fetchAllUsersRecommendations();
@@ -23,8 +24,8 @@ const App: React.FC = () => {
   const fetchAllUsersRecommendations = async () => {
     setLoading(true);
     try {
-      const response = await axios.get<UserWithRecommendations[]>(
-        'http://localhost:8000/api/all-users-recommendations'
+      const response = await axios.get<AllUsers[]>(
+        'http://localhost:8000/api/all-users'
       );
       console.log('API response:', response.data);
       setUsersWithRecommendations(response.data);
@@ -39,7 +40,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleUserSelect = (user: UserWithRecommendations) => {
+  const handleUserSelect = (user: AllUsers) => {
     console.log('Selected user:', user);
     setSelectedUser(user);
   };
@@ -50,18 +51,14 @@ const App: React.FC = () => {
 
   return (
     <Layout className="layout" style={{ minHeight: '100vh' }}>
-      <Header style={{ display: 'flex', alignItems: 'center' }}>
-        <Title level={3} style={{ color: 'white', margin: 0 }}>
-          Just Friends Email Marketing Dashboard
-        </Title>
+      <Header className="app-header">
+        <h3 className="app-title">Just Friends</h3>
+        <span className="app-subtitle">email marketing dashboard</span>
       </Header>
 
-      <Content style={{ padding: '24px' }}>
+      <Content className="app-content">
         {selectedUser ? (
-          <UserDetails
-            userWithRecommendations={selectedUser}
-            onBack={handleBackToDashboard}
-          />
+          <UserDetails AllUsers={selectedUser} onBack={handleBackToDashboard} />
         ) : (
           <Dashboard
             usersWithRecommendations={usersWithRecommendations}

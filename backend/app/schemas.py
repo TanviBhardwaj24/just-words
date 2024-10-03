@@ -38,3 +38,7 @@ class UserWithRecommendations(BaseModel):
 class EmailContent(BaseModel):
     subject: str
     body: str
+
+
+class EmailTypeRequest(BaseModel):
+    type: str

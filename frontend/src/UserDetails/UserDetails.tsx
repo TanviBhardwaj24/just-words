@@ -10,6 +10,7 @@ import {
   message,
   Button,
   Spin,
+  Select,
 } from 'antd';
 import {
   UserOutlined,
@@ -17,34 +18,34 @@ import {
   DashboardOutlined,
   ArrowLeftOutlined,
 } from '@ant-design/icons';
-import { UserWithRecommendations, EmailContent } from '../types';
+import { AllUsers, EmailContent } from '../types';
 import './UserDetails.scss';
 
-const { Text, Paragraph } = Typography;
+const { Text, Paragraph, Title } = Typography;
+const { Option } = Select;
 
 interface UserDetailsProps {
-  userWithRecommendations: UserWithRecommendations | null;
+  AllUsers: AllUsers | null;
   onBack: () => void;
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({
-  userWithRecommendations,
-  onBack,
-}) => {
+const UserDetails: React.FC<UserDetailsProps> = ({ AllUsers, onBack }) => {
   const [emailContent, setEmailContent] = useState<EmailContent | null>(null);
   const [loading, setLoading] = useState(false);
+  const [emailType, setEmailType] = useState('');
 
   useEffect(() => {
-    if (userWithRecommendations?.id) {
-      fetchEmailContent(userWithRecommendations.id.toString());
+    if (AllUsers?.id && emailType) {
+      fetchEmailContent(AllUsers.id.toString(), emailType);
     }
-  }, [userWithRecommendations]);
+  }, [AllUsers, emailType]);
 
-  const fetchEmailContent = async (userId: string) => {
+  const fetchEmailContent = async (userId: string, type: string) => {
     setLoading(true);
     try {
       const emailResponse = await axios.post(
-        `http://localhost:8000/api/generate-email/${userId}`
+        `http://localhost:8000/api/generate-email/${userId}`,
+        { type }
       );
       setEmailContent(emailResponse.data);
     } catch (error) {
@@ -55,7 +56,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
     }
   };
 
-  if (!userWithRecommendations) return null;
+  if (!AllUsers) return null;
 
   return (
     <>
@@ -63,11 +64,28 @@ const UserDetails: React.FC<UserDetailsProps> = ({
         icon={<ArrowLeftOutlined />}
         onClick={onBack}
         className="back-button"
+        style={{ marginBottom: '16px' }}
       >
         Back to Dashboard
       </Button>
+
       <Row gutter={24}>
         <Col span={12}>
+          <div style={{ marginBottom: 16 }}>
+            <Title level={5}>
+              Please select the email type to be generated
+            </Title>
+            <Select
+              placeholder="Please select the email type to be generated"
+              style={{ width: '100%' }}
+              onChange={(value) => setEmailType(value)}
+            >
+              <Option value="winback">Winback Campaign</Option>
+              <Option value="weekly-digest">Weekly Digest</Option>
+              <Option value="signup-thankyou">Thanks for Signing Up</Option>
+            </Select>
+          </div>
+
           <Card
             title={
               <span>
@@ -77,20 +95,20 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             className="user-profile-card"
           >
             <Paragraph>
-              <Text strong>Name:</Text> {userWithRecommendations.name || 'N/A'}
+              <Text strong>Name:</Text> {AllUsers.name || 'N/A'}
             </Paragraph>
             <Paragraph>
-              <Text strong>Age:</Text> {userWithRecommendations.age || 'N/A'}
+              <Text strong>Age:</Text> {AllUsers.age || 'N/A'}
             </Paragraph>
             <Paragraph>
-              <Text strong>Location:</Text>{' '}
-              {userWithRecommendations.location || 'N/A'}
+              <Text strong>Location:</Text> {AllUsers.location || 'N/A'}
             </Paragraph>
             <Paragraph>
               <Text strong>Interests:</Text>{' '}
-              {userWithRecommendations.interests?.join(', ') || 'None'}
+              {AllUsers.interests?.join(', ') || 'None'}
             </Paragraph>
           </Card>
+
           <Card
             title={
               <span>
@@ -101,15 +119,14 @@ const UserDetails: React.FC<UserDetailsProps> = ({
           >
             <List
               itemLayout="horizontal"
-              dataSource={userWithRecommendations.recommendations || []}
+              dataSource={AllUsers.recommendations || []}
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta
                     title={item.title}
                     description={
                       <>
-                        <Text type="secondary">{item.type}</Text>
-                        <br />
+                        <Text type="secondary">{item.type}</Text> <br />
                         {item.description}
                       </>
                     }
@@ -119,6 +136,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
             />
           </Card>
         </Col>
+
         <Col span={12}>
           <Spin spinning={loading} tip="Generating the email...">
             {emailContent && (
@@ -126,7 +144,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({
                 title={
                   <span>
                     <MailOutlined style={{ marginRight: '8px' }} />
-                    Generated Email
+                    Generated Email Preview
                   </span>
                 }
                 className="email-content-card"

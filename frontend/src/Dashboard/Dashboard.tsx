@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Card, Table, Tag, List, Typography } from 'antd';
-import { UserWithRecommendations, Recommendation } from '../types';
+import { AllUsers, Recommendation } from '../types';
 import './Dashboard.scss';
 
 const { Title, Text } = Typography;
 
 interface DashboardProps {
-  usersWithRecommendations: UserWithRecommendations[];
+  usersWithRecommendations: AllUsers[];
   loading: boolean;
-  onUserSelect: (user: UserWithRecommendations) => void;
+  onUserSelect: (user: AllUsers) => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
@@ -54,24 +54,28 @@ const Dashboard: React.FC<DashboardProps> = ({
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: '15%',
       render: (name: string) => <Text strong>{name}</Text>,
     },
     {
       title: 'Age',
       dataIndex: 'age',
       key: 'age',
+      width: '10%',
       render: (age: number) => <Text>{age} years</Text>,
     },
     {
       title: 'Location',
       dataIndex: 'location',
       key: 'location',
+      width: '10%',
       render: (location: string) => <Tag color="purple">{location}</Tag>,
     },
     {
       title: 'Interests',
       dataIndex: 'interests',
       key: 'interests',
+      width: '25%',
       render: (interests: string[]) => (
         <>
           {interests?.map((interest) => (
@@ -102,7 +106,6 @@ const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <>
-      {/* Move the welcome section outside the card as the main header */}
       <div className="welcome-section">
         <Title level={2} className="welcome-title">
           Welcome to the User Dashboard
@@ -124,6 +127,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           pagination={{ pageSize: 5 }}
           bordered
           rowClassName="table-row"
+          scroll={{ y: 450 }}
         />
       </Card>
     </>

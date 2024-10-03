@@ -5,7 +5,7 @@ from . import models, schemas
 logger = logging.getLogger(__name__)
 
 
-def get_all_users_with_recommendations(db: Session):
+def get_all_users(db: Session):
     return db.query(models.UserModel).all()
 
 
