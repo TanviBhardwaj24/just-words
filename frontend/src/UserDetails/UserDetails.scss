@@ -1,0 +1,71 @@
+/* Variables for colors and spacing */
+$primary-color: #0059b3;
+$secondary-color: #004080;
+$highlight-color: #e6f7ff;
+$card-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+$margin: 16px;
+
+/* General styles for the back button */
+.back-button {
+  margin-bottom: $margin;
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+    color: white;
+  }
+}
+
+/* User profile card styles */
+.user-profile-card {
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+  margin-bottom: $margin;
+
+  .ant-typography {
+    margin-bottom: 8px;
+  }
+}
+
+/* Recommendations card styles */
+.recommendations-card {
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+  margin-top: $margin;
+
+  .ant-list-item {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+
+    &:hover {
+      background-color: $highlight-color;
+    }
+
+    .ant-list-item-meta-title {
+      color: $primary-color;
+      font-weight: bold;
+    }
+
+    .ant-list-item-meta-description {
+      color: $secondary-color;
+      margin-top: 4px;
+    }
+  }
+}
+
+/* Email content card styles */
+.email-content-card {
+  border-radius: 8px;
+  box-shadow: $card-shadow;
+
+  .email-subject {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .email-body {
+    white-space: pre-wrap;
+    font-family: inherit;
+  }
+}
