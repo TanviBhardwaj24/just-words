@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Layout, Typography, message } from 'antd';
+import { Layout, message } from 'antd';
 import { allUsers } from './types';
 import Dashboard from './Dashboard/Dashboard';
 import UserDetails from './UserDetails/UserDetails';
