@@ -13,7 +13,7 @@ Personalized AI email generator based on user profile and recommendations
 - Frontend: React with TypeScript, Ant Design
 - Backend: Python with FastAPI
 - Database: PostgreSQL
-- AI Integration: OpenAI's GPT models
+- AI Integration: OpenAI's api
 
 ## Setup Instructions
 
@@ -26,7 +26,7 @@ Personalized AI email generator based on user profile and recommendations
 ### Backend Setup
 1. Clone the repository:
    ```
-   git clone [https://github.com/TanviBhardwaj24/just-words.git)](https://github.com/TanviBhardwaj24/just-words.git)
+   git clone https://github.com/TanviBhardwaj24/just-words.git
    cd just-words/backend
    ```
 
