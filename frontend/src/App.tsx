@@ -55,7 +55,10 @@ const App: React.FC = () => {
 
       <Content className="app-content">
         {selectedUser ? (
-          <UserDetails allUsers={selectedUser} onBack={handleBackToDashboard} />
+          <UserDetails
+            selectedUser={selectedUser}
+            onBack={handleBackToDashboard}
+          />
         ) : (
           <Dashboard
             usersWithRecommendations={usersWithRecommendations}

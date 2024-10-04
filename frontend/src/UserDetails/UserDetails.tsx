@@ -25,20 +25,20 @@ const { Text, Paragraph, Title } = Typography;
 const { Option } = Select;
 
 interface UserDetailsProps {
-  allUsers: allUsers | null;
+  selectedUser: allUsers | null;
   onBack: () => void;
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({ allUsers, onBack }) => {
+const UserDetails: React.FC<UserDetailsProps> = ({ selectedUser, onBack }) => {
   const [emailContent, setEmailContent] = useState<EmailContent | null>(null);
   const [loading, setLoading] = useState(false);
   const [emailType, setEmailType] = useState('');
 
   useEffect(() => {
-    if (allUsers?.id && emailType) {
-      fetchEmailContent(allUsers.id.toString(), emailType);
+    if (selectedUser?.id && emailType) {
+      fetchEmailContent(selectedUser.id.toString(), emailType);
     }
-  }, [allUsers, emailType]);
+  }, [selectedUser, emailType]);
 
   const fetchEmailContent = async (userId: string, type: string) => {
     setLoading(true);
@@ -56,7 +56,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ allUsers, onBack }) => {
     }
   };
 
-  if (!allUsers) return null;
+  if (!selectedUser) return null;
 
   return (
     <>
@@ -95,17 +95,17 @@ const UserDetails: React.FC<UserDetailsProps> = ({ allUsers, onBack }) => {
             className="user-profile-card"
           >
             <Paragraph>
-              <Text strong>Name:</Text> {allUsers.name || 'N/A'}
+              <Text strong>Name:</Text> {selectedUser.name || 'N/A'}
             </Paragraph>
             <Paragraph>
-              <Text strong>Age:</Text> {allUsers.age || 'N/A'}
+              <Text strong>Age:</Text> {selectedUser.age || 'N/A'}
             </Paragraph>
             <Paragraph>
-              <Text strong>Location:</Text> {allUsers.location || 'N/A'}
+              <Text strong>Location:</Text> {selectedUser.location || 'N/A'}
             </Paragraph>
             <Paragraph>
               <Text strong>Interests:</Text>{' '}
-              {allUsers.interests?.join(', ') || 'None'}
+              {selectedUser.interests?.join(', ') || 'None'}
             </Paragraph>
           </Card>
 
@@ -119,7 +119,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ allUsers, onBack }) => {
           >
             <List
               itemLayout="horizontal"
-              dataSource={allUsers.recommendations || []}
+              dataSource={selectedUser.recommendations || []}
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta
