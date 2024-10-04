@@ -29,6 +29,12 @@ def get_user_with_recommendations(db: Session, user_id: int):
                     )
                     for rec in user.recommendations
                 ],
+                facebook=user.facebook,
+                instagram=user.instagram,
+                linkedin=user.linkedin,
+                github=user.github,
+                description=user.description,
+                follows=[str(follow.to_user_id) for follow in user.following],
             )
             logger.info(
                 f"Retrieved user with recommendations: {user_with_recommendations}"

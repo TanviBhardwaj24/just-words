@@ -54,7 +54,7 @@ def generate_email(
         if user_with_recommendations is None:
             raise HTTPException(status_code=404, detail="User not found")
 
-        email_content = llm_service.generate_email_content(
+        email_content = llm_service.generate_personalized_email(
             user_with_recommendations, email_type_request.type
         )
         logger.info(

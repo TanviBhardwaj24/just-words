@@ -10,7 +10,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-# Generate social media links
 def generate_social_links():
     username = "".join(random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8))
     return {
@@ -21,7 +20,6 @@ def generate_social_links():
     }
 
 
-# Generate user description
 def generate_description(user):
     networking_keywords = ["tech", "startups", "business", "finance", "networking"]
     social_keywords = ["yoga", "surfing", "hiking", "photography", "cooking", "running"]
@@ -63,56 +61,40 @@ db = SessionLocal()
 
 users = [
     {
-        "name": "Tanvi Bhardwaj",
-        "age": 28,
+        "name": "Sophia Martinez",
+        "age": 31,
         "location": "New York",
-        "interests": ["technology", "hiking", "photography"],
+        "profession": "Theatre",
+        "interests": ["acting", "ballet", "literature"],
         "recommendations": [
             {
                 "type": "event",
-                "title": "Tech Meetup",
-                "description": "Join fellow tech enthusiasts in New York!",
+                "title": "Broadway Play",
+                "description": "Catch a thrilling new performance on Broadway!",
             },
             {
                 "type": "activity",
-                "title": "Weekend Hike",
-                "description": "Explore the beautiful trails near New York.",
+                "title": "Acting Workshop",
+                "description": "Join an immersive acting workshop for professionals.",
             },
         ],
     },
     {
-        "name": "Jane Doe",
-        "age": 35,
+        "name": "Ethan Johnson",
+        "age": 29,
         "location": "San Francisco",
-        "interests": ["startups", "surfing", "yoga"],
-        "recommendations": [
-            {
-                "type": "job",
-                "title": "Startup Fair",
-                "description": "Connect with innovative startups in San Francisco.",
-            },
-            {
-                "type": "event",
-                "title": "Beach Yoga Session",
-                "description": "Join us for a relaxing yoga session by the ocean.",
-            },
-        ],
-    },
-    {
-        "name": "John Smith",
-        "age": 42,
-        "location": "Chicago",
-        "interests": ["finance", "running", "cooking"],
+        "profession": "Sales",
+        "interests": ["tech startups", "cycling", "photography"],
         "recommendations": [
             {
                 "type": "event",
-                "title": "Financial Workshop",
-                "description": "Learn about personal finance and investing strategies.",
+                "title": "Sales Networking Event",
+                "description": "Connect with other sales professionals in the tech industry.",
             },
             {
                 "type": "activity",
-                "title": "City Marathon",
-                "description": "Participate in the annual Chicago Marathon!",
+                "title": "Golden Gate Park Cycling",
+                "description": "Enjoy a scenic ride through Golden Gate Park.",
             },
         ],
     },
@@ -154,7 +136,7 @@ try:
             logger.info(f"Added recommendation for user {user.id}: {rec_data['title']}")
 
     for user in user_objs:
-        potential_follows = [u for u in user_objs if u.id != user.id]  # Exclude self
+        potential_follows = [u for u in user_objs if u.id != user.id]
         num_follows = random.randint(1, len(potential_follows))
         followed_users = random.sample(potential_follows, num_follows)
 

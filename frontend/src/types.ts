@@ -19,7 +19,7 @@ export interface EmailContent {
   body: string;
 }
 
-export interface AllUsers {
+export interface allUsers {
   id: number;
   name: string;
   age: number;

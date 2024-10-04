@@ -18,27 +18,27 @@ import {
   DashboardOutlined,
   ArrowLeftOutlined,
 } from '@ant-design/icons';
-import { AllUsers, EmailContent } from '../types';
+import { allUsers, EmailContent } from '../types';
 import './UserDetails.scss';
 
 const { Text, Paragraph, Title } = Typography;
 const { Option } = Select;
 
 interface UserDetailsProps {
-  AllUsers: AllUsers | null;
+  allUsers: allUsers | null;
   onBack: () => void;
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({ AllUsers, onBack }) => {
+const UserDetails: React.FC<UserDetailsProps> = ({ allUsers, onBack }) => {
   const [emailContent, setEmailContent] = useState<EmailContent | null>(null);
   const [loading, setLoading] = useState(false);
   const [emailType, setEmailType] = useState('');
 
   useEffect(() => {
-    if (AllUsers?.id && emailType) {
-      fetchEmailContent(AllUsers.id.toString(), emailType);
+    if (allUsers?.id && emailType) {
+      fetchEmailContent(allUsers.id.toString(), emailType);
     }
-  }, [AllUsers, emailType]);
+  }, [allUsers, emailType]);
 
   const fetchEmailContent = async (userId: string, type: string) => {
     setLoading(true);
@@ -56,7 +56,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ AllUsers, onBack }) => {
     }
   };
 
-  if (!AllUsers) return null;
+  if (!allUsers) return null;
 
   return (
     <>
@@ -95,17 +95,17 @@ const UserDetails: React.FC<UserDetailsProps> = ({ AllUsers, onBack }) => {
             className="user-profile-card"
           >
             <Paragraph>
-              <Text strong>Name:</Text> {AllUsers.name || 'N/A'}
+              <Text strong>Name:</Text> {allUsers.name || 'N/A'}
             </Paragraph>
             <Paragraph>
-              <Text strong>Age:</Text> {AllUsers.age || 'N/A'}
+              <Text strong>Age:</Text> {allUsers.age || 'N/A'}
             </Paragraph>
             <Paragraph>
-              <Text strong>Location:</Text> {AllUsers.location || 'N/A'}
+              <Text strong>Location:</Text> {allUsers.location || 'N/A'}
             </Paragraph>
             <Paragraph>
               <Text strong>Interests:</Text>{' '}
-              {AllUsers.interests?.join(', ') || 'None'}
+              {allUsers.interests?.join(', ') || 'None'}
             </Paragraph>
           </Card>
 
@@ -119,7 +119,7 @@ const UserDetails: React.FC<UserDetailsProps> = ({ AllUsers, onBack }) => {
           >
             <List
               itemLayout="horizontal"
-              dataSource={AllUsers.recommendations || []}
+              dataSource={allUsers.recommendations || []}
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta

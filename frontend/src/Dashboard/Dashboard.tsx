@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { Card, Table, Tag, List, Typography } from 'antd';
-import { AllUsers, Recommendation } from '../types';
-import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa'; // Import social media icons
+import { allUsers, Recommendation } from '../types';
+import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
 import './Dashboard.scss';
 
 const { Title, Text } = Typography;
 
 interface DashboardProps {
-  usersWithRecommendations: AllUsers[];
+  usersWithRecommendations: allUsers[];
   loading: boolean;
-  onUserSelect: (user: AllUsers) => void;
+  onUserSelect: (user: allUsers) => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({
@@ -17,9 +17,7 @@ const Dashboard: React.FC<DashboardProps> = ({
   loading,
   onUserSelect,
 }) => {
-  useEffect(() => {
-    console.log('usersWithRecommendations:', usersWithRecommendations);
-  }, [usersWithRecommendations]);
+  useEffect(() => {}, [usersWithRecommendations]);
 
   const professionalInterests = [
     'technology',
@@ -28,6 +26,8 @@ const Dashboard: React.FC<DashboardProps> = ({
     'business',
     'coding',
     'engineering',
+    'acting',
+    'tech startups',
   ];
 
   const socialFunInterests = [
@@ -38,6 +38,9 @@ const Dashboard: React.FC<DashboardProps> = ({
     'cooking',
     'dancing',
     'running',
+    'ballet',
+    'literature',
+    'cycling',
   ];
 
   const getInterestColor = (interest: string) => {
@@ -49,7 +52,7 @@ const Dashboard: React.FC<DashboardProps> = ({
     return 'blue';
   };
 
-  const renderSocialMediaIcons = (record: AllUsers) => {
+  const renderSocialMediaIcons = (record: allUsers) => {
     return (
       <div style={{ display: 'flex', gap: '10px' }}>
         {record.facebook && (
@@ -126,7 +129,7 @@ const Dashboard: React.FC<DashboardProps> = ({
       title: 'Social Media',
       dataIndex: '',
       key: 'social_media',
-      render: (record: AllUsers) => renderSocialMediaIcons(record),
+      render: (record: allUsers) => renderSocialMediaIcons(record),
       width: '10%',
     },
     {
@@ -170,7 +173,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           Welcome to the User Dashboard
         </Title>
         <Text className="welcome-text">
-          Manage your users and their recommendations with ease.
+          Manage your users and their recommendations with ease
         </Text>
       </div>
 
@@ -183,7 +186,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           onRow={(record) => ({
             onClick: () => onUserSelect(record),
           })}
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 3 }}
           bordered
           rowClassName="table-row"
           scroll={{ y: 450 }}

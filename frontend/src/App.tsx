@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Layout, Typography, message } from 'antd';
-import { AllUsers } from './types';
+import { allUsers } from './types';
 import Dashboard from './Dashboard/Dashboard';
 import UserDetails from './UserDetails/UserDetails';
 import './App.css';
@@ -10,11 +10,11 @@ const { Header, Content } = Layout;
 
 const App: React.FC = () => {
   const [usersWithRecommendations, setUsersWithRecommendations] = useState<
-    AllUsers[]
+    allUsers[]
   >([]);
 
   const [loading, setLoading] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<AllUsers | null>(null);
+  const [selectedUser, setSelectedUser] = useState<allUsers | null>(null);
 
   useEffect(() => {
     fetchAllUsersRecommendations();
@@ -23,10 +23,9 @@ const App: React.FC = () => {
   const fetchAllUsersRecommendations = async () => {
     setLoading(true);
     try {
-      const response = await axios.get<AllUsers[]>(
+      const response = await axios.get<allUsers[]>(
         'http://localhost:8000/api/all-users'
       );
-      console.log('API response:', response.data);
       setUsersWithRecommendations(response.data);
     } catch (error) {
       console.error('Error fetching all users recommendations:', error);
@@ -39,8 +38,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleUserSelect = (user: AllUsers) => {
-    console.log('Selected user:', user);
+  const handleUserSelect = (user: allUsers) => {
     setSelectedUser(user);
   };
 
@@ -57,7 +55,7 @@ const App: React.FC = () => {
 
       <Content className="app-content">
         {selectedUser ? (
-          <UserDetails AllUsers={selectedUser} onBack={handleBackToDashboard} />
+          <UserDetails allUsers={selectedUser} onBack={handleBackToDashboard} />
         ) : (
           <Dashboard
             usersWithRecommendations={usersWithRecommendations}
